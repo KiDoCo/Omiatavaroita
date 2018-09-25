@@ -21,7 +21,7 @@ int main()
 
 	int *p = testArray;
 
-	char input;
+	char input = ' ';
 
 	const char inputKeys[arrayLength] = { 'a','b','c','q' };
 
@@ -29,7 +29,7 @@ int main()
 
 	int second = 7;
 
-	do
+	while(input != 'q')
 	{
 
 		input = getchar();
@@ -58,7 +58,7 @@ int main()
 		}
 
 		PauseMethod();
-	} while (input != "q");
+	} 
 	
 	system("pause");
 
