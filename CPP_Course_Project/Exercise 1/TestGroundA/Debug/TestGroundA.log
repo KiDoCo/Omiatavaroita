@@ -1,0 +1,3 @@
+﻿  Test.cpp
+c:\users\joonastuo\desktop\cpp basics\projects\exercise 1\testgrounda\test.cpp(61): error C2446: '!=': no conversion from 'const char *' to 'int'
+  c:\users\joonastuo\desktop\cpp basics\projects\exercise 1\testgrounda\test.cpp(61): note: There is no context in which this conversion is possible
