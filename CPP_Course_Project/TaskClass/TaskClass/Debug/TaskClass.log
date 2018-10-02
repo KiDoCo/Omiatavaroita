@@ -1,0 +1,3 @@
+﻿  TaskClass.cpp
+c:\users\joonastuo\desktop\omiatavaroita\cpp_course_project\taskclass\taskclass\taskclass.cpp(43): warning C4101: 'e': unreferenced local variable
+  TaskClass.vcxproj -> C:\Users\JoonasTuo\Desktop\Omiatavaroita\CPP_Course_Project\Debug\TaskClass.exe

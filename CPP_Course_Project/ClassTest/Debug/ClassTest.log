@@ -1,2 +1,3 @@
 ﻿  ClassTest.cpp
-  ClassTest.vcxproj -> C:\Users\JoonasTuo\Desktop\Omiatavaroita\CPP_Course_Project\Debug\ClassTest.exe
+c:\users\joonastuo\desktop\omiatavaroita\cpp_course_project\classtest\classtest.cpp(95): error C2065: 'testClass': undeclared identifier
+c:\users\joonastuo\desktop\omiatavaroita\cpp_course_project\classtest\classtest.cpp(95): error C2541: 'delete': cannot delete objects that are not pointers

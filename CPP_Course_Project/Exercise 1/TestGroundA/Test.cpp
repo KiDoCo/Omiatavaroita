@@ -23,8 +23,6 @@ int main()
 
 	char input = ' ';
 
-	const char inputKeys[arrayLength] = { 'a','b','c','q' };
-
 	int first = 2;
 
 	int second = 7;

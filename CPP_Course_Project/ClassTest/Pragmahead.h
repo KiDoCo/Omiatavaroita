@@ -10,7 +10,6 @@ public:
 
 protected:
 
-	int numberArray[10];
 	int *C_array;
 	int addedNumbers;
 
