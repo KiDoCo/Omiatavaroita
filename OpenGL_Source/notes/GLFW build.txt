@@ -1,0 +1,4 @@
+1. add needed includes and src codes
+2. build the solution
+3. add depencies in project settings via visual studio 
+4. make sure glad.c is added as source file 
