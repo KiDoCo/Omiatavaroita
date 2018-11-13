@@ -1,0 +1,17 @@
+﻿  BowlingBall.cpp
+c:\users\joonastuo\desktop\omiatavaroita\cpp_course_project\exercise6_inheritance\bowlingball.cpp(7): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\joonastuo\desktop\omiatavaroita\cpp_course_project\exercise6_inheritance\bowlingball.cpp(14): error C2660: 'EnemyBaseClass::DealDamage': function does not take 1 arguments
+  c:\users\joonastuo\desktop\omiatavaroita\cpp_course_project\exercise6_inheritance\enemybase.h(13): note: see declaration of 'EnemyBaseClass::DealDamage'
+  EnemyBase.cpp
+  Player.cpp
+c:\users\joonastuo\desktop\omiatavaroita\cpp_course_project\exercise6_inheritance\player.cpp(17): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+c:\users\joonastuo\desktop\omiatavaroita\cpp_course_project\exercise6_inheritance\player.cpp(17): error C2556: 'int PlayerClass::TakeDamage(int)': overloaded function differs only by return type from 'void PlayerClass::TakeDamage(int)'
+  c:\users\joonastuo\desktop\omiatavaroita\cpp_course_project\exercise6_inheritance\player.h(10): note: see declaration of 'PlayerClass::TakeDamage'
+c:\users\joonastuo\desktop\omiatavaroita\cpp_course_project\exercise6_inheritance\player.cpp(16): error C2371: 'PlayerClass::TakeDamage': redefinition; different basic types
+  c:\users\joonastuo\desktop\omiatavaroita\cpp_course_project\exercise6_inheritance\player.h(10): note: see declaration of 'PlayerClass::TakeDamage'
+c:\users\joonastuo\desktop\omiatavaroita\cpp_course_project\exercise6_inheritance\player.cpp(22): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+c:\users\joonastuo\desktop\omiatavaroita\cpp_course_project\exercise6_inheritance\player.cpp(22): error C2556: 'int PlayerClass::PrintInfo(std::string,std::string)': overloaded function differs only by return type from 'void PlayerClass::PrintInfo(std::string,std::string)'
+  c:\users\joonastuo\desktop\omiatavaroita\cpp_course_project\exercise6_inheritance\player.h(11): note: see declaration of 'PlayerClass::PrintInfo'
+c:\users\joonastuo\desktop\omiatavaroita\cpp_course_project\exercise6_inheritance\player.cpp(21): error C2371: 'PlayerClass::PrintInfo': redefinition; different basic types
+  c:\users\joonastuo\desktop\omiatavaroita\cpp_course_project\exercise6_inheritance\player.h(11): note: see declaration of 'PlayerClass::PrintInfo'
+  Generating Code...
