@@ -1,2 +1,5 @@
 ﻿  Ex_7_VectorOperator.cpp
+c:\users\joonastuo\desktop\omiatavaroita\cpp_course_project\ex_7_vectoroperator\ex_7_vectoroperator.cpp(5): warning C4101: 'func': unreferenced local variable
+  Vector2D.cpp
+  Generating Code...
   Ex_7_VectorOperator.vcxproj -> C:\Users\JoonasTuo\Desktop\Omiatavaroita\CPP_Course_Project\Debug\Ex_7_VectorOperator.exe
