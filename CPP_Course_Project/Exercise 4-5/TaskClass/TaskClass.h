@@ -23,3 +23,15 @@ public:
 	void setPriority(int h) { if (h <= 4) priority = h; else { h = 4; priority = h; } };
 
 };
+
+
+struct TaskClassIterator
+{
+	TaskClassIterator() : prior(0), name(0) {};
+	int prior;
+	std::string name;
+	void operator()(TaskClass *member) { member->print(); };
+	void operator()(TaskClass *member, int priority) { if (member->priority == priority) member->print(); };
+	void operator()(TaskClass *member, char name[]) { if (member->attribute == name) member->print(); }
+
+};

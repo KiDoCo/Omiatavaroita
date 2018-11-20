@@ -9,11 +9,7 @@ BowlingBall::BowlingBall(int healtha, float speeda, float rangea, int levela) : 
 
 }
 
-///implementing function which was declared in baseclass
-void BowlingBall::Ability(PlayerClass *object)
-{
-	DealDamage(speed * damage);
-}
+
 
 
 

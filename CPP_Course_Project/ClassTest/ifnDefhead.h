@@ -1,5 +1,5 @@
 #ifndef ifnDefHead
-#define ifnDefHead
+#define MOMS_SPAGHETTI
 
 #include <string>
 #include <iostream>
