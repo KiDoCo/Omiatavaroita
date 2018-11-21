@@ -1,4 +1,4 @@
-#include "src/Headers/ShaderClass.h"
+#include <Headers/ShaderClass.h>
 
 
 Shader::Shader(const char* vertexPath, const char* fragmentPath)
@@ -8,7 +8,6 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath)
 	std::string fragmentCode;
 	std::ifstream vShaderFile;
 	std::ifstream fShaderFile;
-
 	// ensure ifstream objects can throw exceptions:
 	vShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
 	fShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
@@ -45,17 +44,13 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath)
 	vertex = glCreateShader(GL_VERTEX_SHADER);
 	glShaderSource(vertex, 1, &vShaderCode, NULL);
 	glCompileShader(vertex);
-
 	// print compile errors if any
 	glGetShaderiv(vertex, GL_COMPILE_STATUS, &success);
-
 	if (!success)
 	{
 		glGetShaderInfoLog(vertex, 512, NULL, infoLog);
 		std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
-	}
-
-	//fragment shader
+	};
 
 	fragment = glCreateShader(GL_FRAGMENT_SHADER);
 	glShaderSource(fragment, 1, &fShaderCode, NULL);
@@ -104,4 +99,9 @@ void Shader::SetInt(const std::string &name, int value) const
 void Shader::SetFloat(const std::string &name, float value) const
 {
 	glUniform1i(glGetUniformLocation(ID, name.c_str()), value);
+}
+
+void Shader::SetMat4(const std::string &name, const glm::mat4 &value) const
+{
+	glUniformMatrix4fv(glGetUniformLocation(ID, name.c_str()), 1, GL_FALSE, &value[0][0]);
 }
