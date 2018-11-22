@@ -15,26 +15,45 @@
 #include <cstdlib>
 #include <vector>
 #include <optional>
+#include <algorithm>
+
+const int WIDTH = 800;
+const int HEIGHT = 600;
 
 const std::vector<const char*> validationLayers = {
 	"VK_LAYER_LUNARG_standard_validation"
 };
 
-struct  QueueFamilyIndices
-{
-	std::optional<uint32_t> graphicsFamily;
+const std::vector<const char*> deviceExtensions = {
+	VK_KHR_SWAPCHAIN_EXTENSION_NAME
+};
 
-	bool isComplete()
-	{
-		return graphicsFamily.has_value();
-	}
-	};
 
 #ifdef NDEBUG
 const bool enableValidationLayers = false;
 #else
 const bool enableValidationLayers = true;
 #endif 
+
+
+
+struct  QueueFamilyIndices
+{
+	std::optional<uint32_t> graphicsFamily;
+	std::optional<uint32_t> presentFamily;
+
+	bool isComplete()
+	{
+		return graphicsFamily.has_value() && presentFamily.value();
+	}
+};
+
+struct SwapChainSupportDetails
+{
+	VkSurfaceCapabilitiesKHR capabilities;
+	std::vector<VkSurfaceFormatKHR> formats;
+	std::vector<VkPresentModeKHR> presentModes;
+};
 
 class HelloTriangleApplication {
 public:
@@ -47,10 +66,13 @@ public:
 		createSurface();
 		pickPhysicalDevice();
 		createLogicalDevice();
+		createSwapChain();
 	}
 	void run()
 	{
 		initWindow();
+		initVulkan();
+		mainLoop();
 		cleanup();
 	}
 
@@ -59,44 +81,59 @@ public:
 		while (!glfwWindowShouldClose(window))
 		{
 			glfwPollEvents();
-			drawFrame();
 		}
 
 	}
 
 private:
 
-	VkInstanceCreateInfo createinfo = {};
-	VkApplicationInfo appInfo = {};
+	GLFWwindow *window;
 	VkInstance instance;
 	VkDebugUtilsMessengerEXT callback;
-	VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
-	VkQueue graphicsQueue;
-	VkDevice device;
 	VkSurfaceKHR surface;
-	GLFWwindow *window;
-	std::vector<const char*> getRequiredExtensions();
+	VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
+	VkDevice device;
+	VkQueue graphicsQueue;
+	VkQueue presentQueue;
+	VkSwapchainKHR swapChain;
+	std::vector<VkImage> swapChainImages;
+	VkFormat swapChainImageFormat;
+	VkExtent2D swapChainExtent;
 
-	//init vulkan
+
+	void initWindow();
+	///init vulkan
+
+	///create functions
 	void createInstance();
-	void ApplicationInfoGet();
-	bool checkValidationLayerSupport();
-	void setupDebugCallBack();
-	void pickPhysicalDevice();
 	void createLogicalDevice();
 	void createSurface();
+	void createSwapChain();
+	///checkers
+	bool checkValidationLayerSupport();
+	bool checkDeviceExtensionSupport(VkPhysicalDevice device);
+
+	///returning functions
+	VkApplicationInfo* ApplicationInfoGet() const;
+	std::vector<const char*> getRequiredExtensions();
 	bool isDeviceSuitable(VkPhysicalDevice device);
 	QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device);
+	SwapChainSupportDetails querySwapChainSupport(VkPhysicalDevice device);
 	int rateDeviceSuitability(VkPhysicalDevice device);
+
+	///etc.
+	void setupDebugCallBack();
+	void pickPhysicalDevice();
+
 	//main loop
 	void drawFrame();
+
 	//run
 	void cleanup();
-	void initWindow();
 
-	static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity, 
-		VkDebugUtilsMessageTypeFlagsEXT messageType, 
-		const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData, 
+	static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
+		VkDebugUtilsMessageTypeFlagsEXT messageType,
+		const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData,
 		void* pUserData)
 	{
 		std::cerr << "validation layer: " << pCallbackData->pMessage << std::endl;
