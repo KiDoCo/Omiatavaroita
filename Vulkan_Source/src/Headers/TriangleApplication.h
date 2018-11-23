@@ -16,6 +16,7 @@
 #include <vector>
 #include <optional>
 #include <algorithm>
+#include <fstream>
 
 const int WIDTH = 800;
 const int HEIGHT = 600;
@@ -27,6 +28,20 @@ const std::vector<const char*> validationLayers = {
 const std::vector<const char*> deviceExtensions = {
 	VK_KHR_SWAPCHAIN_EXTENSION_NAME
 };
+
+static std::vector<char> readFile(const std::string& filename)
+{
+	std::ifstream file(filename, std::ios::ate | std::ios::binary);
+	if (!file.is_open())
+	{
+		throw std::runtime_error("Failed to open file!");
+	}
+	size_t fileSize = (size_t)file.tellg();
+	std::vector<char> buffer(fileSize);
+	file.close();
+
+	return buffer;
+}
 
 
 #ifdef NDEBUG
@@ -67,6 +82,8 @@ public:
 		pickPhysicalDevice();
 		createLogicalDevice();
 		createSwapChain();
+		createImageViews();
+		createGraphicsPipeline();
 	}
 	void run()
 	{
@@ -95,10 +112,12 @@ private:
 	VkDevice device;
 	VkQueue graphicsQueue;
 	VkQueue presentQueue;
+	VkPipelineLayout pipelineLayout;
 	VkSwapchainKHR swapChain;
 	std::vector<VkImage> swapChainImages;
 	VkFormat swapChainImageFormat;
 	VkExtent2D swapChainExtent;
+	std::vector<VkImageView> swapChainImageViews;
 
 
 	void initWindow();
@@ -109,6 +128,8 @@ private:
 	void createLogicalDevice();
 	void createSurface();
 	void createSwapChain();
+	void createImageViews();
+	void createGraphicsPipeline();
 	///checkers
 	bool checkValidationLayerSupport();
 	bool checkDeviceExtensionSupport(VkPhysicalDevice device);
@@ -120,7 +141,7 @@ private:
 	QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device);
 	SwapChainSupportDetails querySwapChainSupport(VkPhysicalDevice device);
 	int rateDeviceSuitability(VkPhysicalDevice device);
-
+	VkShaderModule createShaderModule(const std::vector<char>& code);
 	///etc.
 	void setupDebugCallBack();
 	void pickPhysicalDevice();
