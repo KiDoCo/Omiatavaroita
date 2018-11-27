@@ -21,17 +21,34 @@ public:
 	int id;
 	int priority;
 	void setPriority(int h) { if (h <= 4) priority = h; else { h = 4; priority = h; } };
+	friend bool operator<(const TaskClass &m1, const TaskClass &m2)
+	{
+		return m1.priority < m2.priority;
+	}
 
 };
 
 
 struct TaskClassIterator
 {
-	TaskClassIterator() : prior(0), name(0) {};
-	int prior;
-	std::string name;
-	void operator()(TaskClass *member) { member->print(); };
-	void operator()(TaskClass *member, int priority) { if (member->priority == priority) member->print(); };
-	void operator()(TaskClass *member, char name[]) { if (member->attribute == name) member->print(); }
+	TaskClassIterator() {};
+	int* prior = nullptr;
+	std::string* name = nullptr;
+	void operator()(TaskClass *member)
+	{
+		if (!prior && !name)
+		{
+			member->print();
+		}
 
+		if(prior && !name)
+		{
+			if (member->priority == *prior) member->print();
+		}
+
+		if(!prior && name)
+		{
+			if (member->attribute == *name) member->print();
+		}
+	};
 };
