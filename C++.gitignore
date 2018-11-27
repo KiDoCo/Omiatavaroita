@@ -370,3 +370,18 @@ ASALocalRun/
 
 # Local History for Visual Studio
 .localhistory/
+
+*.ipch
+*.obj
+*.suo
+*.pdb
+*.tlog
+*.log
+*.idb
+*.pdb
+*.r
+*.c
+*.w
+*.com
+*.user
+*.filters
