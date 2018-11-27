@@ -1,6 +1,3 @@
-
-
-
 #include "src/Headers/TriangleApplication.h"
 #include <iostream>
 
@@ -12,7 +9,6 @@ int main()
 
 	try
 	{
-		app.initVulkan();
 		app.run();
 	}
 	catch (const std::exception& e)
