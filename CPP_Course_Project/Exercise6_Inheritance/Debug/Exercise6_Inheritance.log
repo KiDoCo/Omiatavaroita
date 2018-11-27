@@ -1,7 +1,0 @@
-﻿  BowlingBall.cpp
-c:\users\joonastuo\desktop\omiatavaroita\cpp_course_project\exercise6_inheritance\bowlingball.cpp(7): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-  EnemyBase.cpp
-  Exercise6_Inheritance.cpp
-  Player.cpp
-  Generating Code...
-  Exercise6_Inheritance.vcxproj -> C:\Users\JoonasTuo\Desktop\Omiatavaroita\CPP_Course_Project\Debug\Exercise6_Inheritance.exe
