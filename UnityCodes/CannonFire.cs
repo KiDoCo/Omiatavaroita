@@ -10,27 +10,31 @@ public class CannonFire : MonoBehaviour
     public CannonActionDelegate FireDelegate;
 
     public CannonActionDelegate PowerDelegate;
+    private InputManager manager;
     GameObject[] temp;
+    private GameObject clone;
     public GameObject bullet;
-    public Slider slid;
     public GameObject launchpos;
-    GameObject clone;
-
+    public GameObject explosion;
+    public Slider slid;
     public bool hasFired;
     public bool powerUp;
     private float bulletRadius = 2.0f;
     private float accDec = 0.5f;
-    private const float Constacc = 18.0f;
+    private const float Constacc = 100.0f;
     private float acc;
-    private float gravityModifier = 4.0f;
+    private float gravityModifier = 30.0f;
+    private const float powerMultiplier = 2.0f;
+    private const float reactionTime = 600.0f;
     private float velocityX;
     private float velocityY;
+    private bool increase;
 
     private void Start()
     {
         FireDelegate += Fire;
         PowerDelegate += Power;
-
+        manager = FindObjectOfType<InputManager>();
         temp = FindObjectsOfType<GameObject>();
     }
 
@@ -39,11 +43,13 @@ public class CannonFire : MonoBehaviour
     public void Power()
     {
         if (clone) return;
-        acc = Mathf.PingPong(Time.time * Constacc * 2, 3 * Constacc);
-        velocityX = Input.mousePosition.x * acc  * Time.deltaTime;
-        velocityY = Input.mousePosition.y * acc * Mathf.Pow(9.81f,2.0f) * Time.deltaTime;
+        acc = PingPongDingDong(acc, Constacc * 0.5f, 3.0f * Constacc);
+        float x = Mathf.Clamp(Mathf.Abs(Camera.main.ScreenToWorldPoint(Input.mousePosition).x - launchpos.transform.position.x), -20, 20);
+        float y = Mathf.Clamp(Mathf.Abs(Camera.main.ScreenToWorldPoint(Input.mousePosition).y - launchpos.transform.position.y), -20, 20);
+        velocityX = x * acc * Time.deltaTime * powerMultiplier;
+        velocityY = y * acc * Time.deltaTime * powerMultiplier; //cannon rotation * acceleration *  time
+        slid.maxValue = 3 * Constacc;
         slid.value = acc;
-        Debug.Log("Power called");
     }
 
     void Fire()
@@ -62,7 +68,6 @@ public class CannonFire : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log(transform.GetChild(0).name);
         if (powerUp)
             Power();
     }
@@ -77,11 +82,13 @@ public class CannonFire : MonoBehaviour
             {
                 if (temp[i].GetComponent<Collider2D>() != null && clone.GetComponent<Collider2D>().bounds.Intersects(temp[i].GetComponent<Collider2D>().bounds))
                 {
-                    Debug.Log("destroyed");
+                    if (temp[i].name == manager.enemy) Destroy(temp[i]);
+
+                    GameObject tempa = Instantiate(explosion, clone.transform.position, Quaternion.identity);
                     Destroy(clone);
                     clone = null;
+                    Destroy(tempa, 2.0f);
                     return;
-
                 }
             }
 
@@ -90,7 +97,6 @@ public class CannonFire : MonoBehaviour
             clone.GetComponent<Rigidbody2D>().position =
                 clone.GetComponent<Rigidbody2D>().position +
                 new Vector2(direction.x * delta.x, Vector2.up.y * delta.y);
-            Debug.Log(delta.y);
         }
         else
         {
@@ -98,7 +104,7 @@ public class CannonFire : MonoBehaviour
             velocityY = 0;
             acc = 0;
             slid.value = acc;
-            FindObjectOfType<InputManager>().SwitchPlayer();
+            manager.SwitchPlayer();
         }
     }
 
@@ -112,5 +118,29 @@ public class CannonFire : MonoBehaviour
         velocityY -= gravityModifier * 9.81f * Time.deltaTime;
 
         return new Vector2(velocityX, velocityY);
+    }
+
+    private float PingPongDingDong(float val, float min, float max)
+    {
+        if (val <= min)
+        {
+            increase = true;
+        }
+
+        if (val >= max)
+        {
+            increase = false;
+        }
+
+        if (increase)
+        {
+            val += Time.deltaTime * reactionTime;
+        }
+        else
+        {
+            val -= Time.deltaTime * reactionTime;
+        }
+
+        return val;
     }
 }

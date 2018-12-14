@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class InputManager : MonoBehaviour
 {
@@ -9,7 +10,9 @@ public class InputManager : MonoBehaviour
     private CannonFire cannon;
     Vector3 mousePos;
     Vector3 cannonPos;
-
+    public string enemy = "";
+    private float windresistance;
+    public Text text;
     private void Start()
     {
         SwitchPlayer();
@@ -17,7 +20,6 @@ public class InputManager : MonoBehaviour
 
     void Update()
     {
-        Debug.Log(cannon);
 
         if (cannon.hasFired)
         {
@@ -55,11 +57,14 @@ public class InputManager : MonoBehaviour
     {
         if(cannon != null)
         cannon.hasFired = false;
-
+        windresistance = Random.Range(0, 5);
+        text.text = windresistance.ToString();
         if (player == 2)
         {
             cannon = GameObject.Find("Player2").GetComponentInChildren<CannonFire>();
             player--;
+            enemy = "Player1";
+
             return;
         }
 
@@ -67,6 +72,7 @@ public class InputManager : MonoBehaviour
         {
             cannon = GameObject.Find("Player1").GetComponentInChildren<CannonFire>();
             player++;
+            enemy = "Player2";
         }
 
     }
