@@ -1,13 +1,11 @@
 #include <vector>
 #include <map>
-#include <glut/glut.h>
+#include <glut.h>
 
 #pragma once
 static int WIDTH = 2 * (512 + 4);
 
 static int HEIGHT = 2 * (256 + 2);
-
-
 
 namespace
 {
@@ -31,14 +29,6 @@ namespace
 		pixel[2] = r;
 	}
 }
-
-
-template<class T>
-struct vec2
-{
-	T x = 0;
-	T y = 0;
-};
 
 typedef std::pair<int, int> Position;
 

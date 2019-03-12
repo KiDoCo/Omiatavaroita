@@ -14,3 +14,5 @@ call copy /Y glut\glut32.dll glut32.dll
 call copy /Y build\win32\Debug\pathfinding.exe pathfindingd.exe
 call copy /Y build\win32\Release\pathfinding.exe pathfinding.exe
 echo Build done!!!
+
+pause

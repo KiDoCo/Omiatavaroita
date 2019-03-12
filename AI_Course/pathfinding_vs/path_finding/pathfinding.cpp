@@ -2,11 +2,11 @@
 #include <stdio.h>
 #include <cstdlib>
 #include <assert.h>
-#include <glut/glut.h>
 #include <memory.h>
 #include "Classes.h"
 #include <iostream>
 
+#pragma warning(disable : 4996)
 
 float* SetColorValues(float r, float g, float b)
 {
@@ -43,56 +43,18 @@ namespace
 	void doPathFinding(const uint8_t* inputData, int width, int height,
 		uint8_t* outputData, int startX, int startY, int endX, int endY)
 	{
-
-		OpenList list;
-		ClosedList listA;
-		SearchLevel levelSearcher(inputData);
-		SearchNode StartNode(Position(startX, startY), 0, 0, NULL);
-		SearchNode prev(StartNode);
-		SearchNode curnode(StartNode);
-		SearchNode EndNode(Position(endX, endY), 0, 0, NULL);
-		SearchNode * n = new SearchNode(curnode.pos, levelSearcher.GetH(curnode.pos, EndNode.pos), levelSearcher.GetG(curnode.pos, StartNode.pos), 0);
-		list.insertToOpenList(n);
+		OpenList openlist;
+		ClosedList closedlist;
+		SearchLevel levelsearcher(inputData);
 		// Make noise for now
+		Position goalPosition(endX, endY);
+		Position startPosition(startX, startY);
+		std::vector<Position> locations = levelsearcher.GetAdjancentNodes(startX, startY);
+		SearchNode goalNode(goalPosition, 0, levelsearcher.GetG(goalPosition, startPosition), NULL);
 		for (size_t i = 0; i < 3 * width*height; i += 3)
 		{
-			SearchNode* result;
-			prev = *(list.RemoveSmallestFFromOpenList());
 
-			if (prev.pos == EndNode.pos)
-			{
-				curnode = prev;
-				return;
-			}
 
-			listA.AddToClosedList(&prev);
-			std::vector<Position> asdf = levelSearcher.GetAdjancentNodes(curnode.pos.first, curnode.pos.second);
-
-			for (size_t i = 0; i < asdf.size(); ++i)
-			{
-				Position curpos = asdf[i];
-
-				if (levelSearcher.IsWalkable(curpos.first, curpos.second) && !listA.IsInClosedList(curpos))
-				{
-					SearchNode * newNode = new SearchNode(curpos, levelSearcher.GetH(curpos, prev.pos),
-						levelSearcher.GetG(curpos, StartNode.pos), &prev);
-
-					SearchNode * nn = list.findFromOpenList(curpos);
-
-					if (nn == 0)
-					{
-						list.insertToOpenList(newNode);
-					}
-					else
-					{
-						if (n->getDistance() >= newNode->getDistance())
-						{
-							n->resetPrev(newNode->prevNode, levelSearcher.GetG(newNode->prevNode->pos, n->pos));
-							list.SortOpenList();
-						}
-					}
-				}
-			}
 
 		}
 	}
