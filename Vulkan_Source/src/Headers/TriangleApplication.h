@@ -38,6 +38,8 @@ static std::vector<char> readFile(const std::string& filename)
 	}
 	size_t fileSize = (size_t)file.tellg();
 	std::vector<char> buffer(fileSize);
+	file.seekg(0);
+	file.read(buffer.data(), fileSize);
 	file.close();
 
 	return buffer;
@@ -83,8 +85,14 @@ public:
 		createLogicalDevice();
 		createSwapChain();
 		createImageViews();
+		createRenderPass();
 		createGraphicsPipeline();
+		createFramebuffers();
+		createCommandPool();
+		createCommandBuffers();
+		createSemaphores();
 	}
+
 	void run()
 	{
 		initWindow();
@@ -98,8 +106,10 @@ public:
 		while (!glfwWindowShouldClose(window))
 		{
 			glfwPollEvents();
+			drawFrame();
 		}
-
+		//wait for semaphore deletion
+		vkDeviceWaitIdle(device);
 	}
 
 private:
@@ -112,13 +122,19 @@ private:
 	VkDevice device;
 	VkQueue graphicsQueue;
 	VkQueue presentQueue;
+	VkRenderPass renderPass;
+	VkPipeline graphicsPipeline;
 	VkPipelineLayout pipelineLayout;
 	VkSwapchainKHR swapChain;
-	std::vector<VkImage> swapChainImages;
+	VkCommandPool commandPool;
+	VkSemaphore imageAvailableSemaphore;
+	VkSemaphore renderFinishedSemaphore;
 	VkFormat swapChainImageFormat;
 	VkExtent2D swapChainExtent;
+	std::vector<VkCommandBuffer> commandBuffers;
+	std::vector<VkImage> swapChainImages;
 	std::vector<VkImageView> swapChainImageViews;
-
+	std::vector<VkFramebuffer> swapChainFramebuffers;
 
 	void initWindow();
 	///init vulkan
@@ -130,9 +146,16 @@ private:
 	void createSwapChain();
 	void createImageViews();
 	void createGraphicsPipeline();
+	void createRenderPass();
+	void createFramebuffers();
+	void createCommandPool();
+	void createCommandBuffers();
+	void createSemaphores();
+
 	///checkers
 	bool checkValidationLayerSupport();
 	bool checkDeviceExtensionSupport(VkPhysicalDevice device);
+
 
 	///returning functions
 	VkApplicationInfo* ApplicationInfoGet() const;
@@ -142,6 +165,7 @@ private:
 	SwapChainSupportDetails querySwapChainSupport(VkPhysicalDevice device);
 	int rateDeviceSuitability(VkPhysicalDevice device);
 	VkShaderModule createShaderModule(const std::vector<char>& code);
+
 	///etc.
 	void setupDebugCallBack();
 	void pickPhysicalDevice();
@@ -149,7 +173,7 @@ private:
 	//main loop
 	void drawFrame();
 
-	//run
+	//end
 	void cleanup();
 
 	static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
